@@ -41,6 +41,7 @@ class Expense:
         self.notes = notes
         self.paid = paid
 
+
     # id property (optional)
     @property
     def id(self) -> Optional[str]:

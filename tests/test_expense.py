@@ -7,14 +7,11 @@ from expense import Expense
 
 class TestExpense(unittest.TestCase):
     def test_basic_construction(self):
-        e = Expense("Lunch", 12.5, currency="USD", date_=date(2025, 11, 3), category="meals", notes="team lunch", paid=True)
-        self.assertEqual(e.title, "Lunch")
-        self.assertEqual(e.amount, Decimal("12.50"))
-        self.assertEqual(e.currency, "USD")
-        self.assertEqual(e.date, date(2025, 11, 3))
-        self.assertEqual(e.category, "meals")
-        self.assertEqual(e.notes, "team lunch")
-        self.assertTrue(e.paid)
+        e = Expense("Comcast", 165.00, due_day=10, is_fixed=False)
+        self.assertEqual(e.name, "Comcast")
+        self.assertEqual(e.amount, Decimal("165.00"))
+        self.assertEqual(e.due_day, 10)
+        self.assertEqual(e.is_fixed, False)
 
     def test_amount_validation(self):
         with self.assertRaises(ValueError):
@@ -24,11 +21,11 @@ class TestExpense(unittest.TestCase):
             Expense("Negative", -5)
 
     def test_to_dict(self):
-        e = Expense("Coffee", "2.3")
+        e = Expense("North Shore Gas", "89.50")
         d = e.to_dict()
-        self.assertIn("title", d)
+        self.assertIn("namee", d)
         self.assertIn("amount", d)
-        self.assertEqual(d["title"], "Coffee")
+        self.assertEqual(d["name"], "North Shore Gas")
 
 
 if __name__ == "__main__":

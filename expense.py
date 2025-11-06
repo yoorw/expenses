@@ -1,6 +1,3 @@
-from __future__ import annotations
-
-from dataclasses import dataclass
 from datetime import date, datetime
 from decimal import Decimal, InvalidOperation
 from typing import Optional, Dict, Any
@@ -21,46 +18,28 @@ class Expense:
 
     def __init__(
         self,
-        title: str,
+        name: str,
         amount: Any,
-        *,
-        currency: str = "USD",
-        date_: Optional[date] = None,
-        category: Optional[str] = None,
-        notes: Optional[str] = None,
-        paid: bool = False,
-        id: Optional[str] = None,
+        due_day: int,
+        is_fixed: bool,
     ) -> None:
         # Basic validation and assignments
-        self._id = id
-        self.title = title
+        self.name = name
         self.amount = amount
-        self.currency = currency
-        self.date = date_ or date.today()
-        self.category = category
-        self.notes = notes
-        self.paid = paid
+        self.due_day = due_day
+        self.is_fixed = is_fixed
 
 
-    # id property (optional)
+    # name
     @property
-    def id(self) -> Optional[str]:
-        return self._id
+    def name(self) -> str:
+        return self._name
 
-    @id.setter
-    def id(self, value: Optional[str]) -> None:
-        self._id = value
-
-    # title
-    @property
-    def title(self) -> str:
-        return self._title
-
-    @title.setter
-    def title(self, value: str) -> None:
+    @name.setter
+    def name(self, value: str) -> None:
         if not isinstance(value, str) or not value.strip():
-            raise ValueError("title must be a non-empty string")
-        self._title = value.strip()
+            raise ValueError("Name must be a non-empty string")
+        self._name = value.strip()
 
     # amount (store as Decimal)
     @property
@@ -82,74 +61,37 @@ class Expense:
         # Normalize to two decimal places for currency-like behavior
         self._amount = dec.quantize(Decimal("0.01"))
 
-    # currency
+    # due_day
     @property
-    def currency(self) -> str:
-        return self._currency
+    def due_day(self) -> int:
+        return self._due_day
 
-    @currency.setter
-    def currency(self, value: str) -> None:
-        if not isinstance(value, str) or not value:
-            raise ValueError("currency must be a non-empty string")
-        self._currency = value.upper()
+    @due_day.setter
+    def date(self, value: int) -> None:
+        if not isinstance(value, int):
+            raise ValueError("due_day must be an Integer")
+        self._due_day = value
 
-    # date
+    # is_fixed
     @property
-    def date(self) -> date:
-        return self._date
+    def is_fixed(self) -> bool:
+        return self._is_fixed
 
-    @date.setter
-    def date(self, value: Optional[date]) -> None:
-        if value is None:
-            self._date = date.today()
-            return
-        if isinstance(value, datetime):
-            value = value.date()
-        if not isinstance(value, date):
-            raise ValueError("date must be a datetime.date (or datetime)")
-        self._date = value
-
-    # category
-    @property
-    def category(self) -> Optional[str]:
-        return self._category
-
-    @category.setter
-    def category(self, value: Optional[str]) -> None:
-        self._category = value.strip() if isinstance(value, str) and value.strip() else None
-
-    # notes
-    @property
-    def notes(self) -> Optional[str]:
-        return self._notes
-
-    @notes.setter
-    def notes(self, value: Optional[str]) -> None:
-        self._notes = value.strip() if isinstance(value, str) and value.strip() else None
-
-    # paid
-    @property
-    def paid(self) -> bool:
-        return self._paid
-
-    @paid.setter
-    def paid(self, value: bool) -> None:
-        self._paid = bool(value)
+    @is_fixed.setter
+    def is_fixed(self, value: bool) -> None:
+        if not isinstance(value, bool):
+            raise ValueError("is_fixed must be a Boolean")
+        self._is_fixed = value
 
     def to_dict(self) -> Dict[str, Any]:
         return {
-            "id": self.id,
-            "title": self.title,
+            "name": self.name,
             "amount": str(self.amount),
-            "currency": self.currency,
-            "date": self.date.isoformat(),
-            "category": self.category,
-            "notes": self.notes,
-            "paid": self.paid,
+            "due_day": self.due_day,
+            "is_fixed": self.is_fixed
         }
 
     def __repr__(self) -> str:
         return (
-            f"Expense(title={self.title!r}, amount={self.amount!r}, currency={self.currency!r}, "
-            f"date={self.date!r}, category={self.category!r}, paid={self.paid!r})"
+            f"Expense(name={self.name!r}, amount={self.amount!r}, due_date={self.due_day!r}, is_fixed={self.is_fixed}"
         )

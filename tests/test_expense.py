@@ -15,15 +15,15 @@ class TestExpense(unittest.TestCase):
 
     def test_amount_validation(self):
         with self.assertRaises(ValueError):
-            Expense("Bad", "not-a-number")
+            Expense("Bad", "not-a-number", 10, True)
 
         with self.assertRaises(ValueError):
-            Expense("Negative", -5)
+            Expense("Negative", -5, 10, False)
 
     def test_to_dict(self):
-        e = Expense("North Shore Gas", "89.50")
+        e = Expense("North Shore Gas", "89.50", 7, True)
         d = e.to_dict()
-        self.assertIn("namee", d)
+        self.assertIn("name", d)
         self.assertIn("amount", d)
         self.assertEqual(d["name"], "North Shore Gas")
 

@@ -67,7 +67,7 @@ class Expense:
         return self._due_day
 
     @due_day.setter
-    def date(self, value: int) -> None:
+    def due_day(self, value: int) -> None:
         if not isinstance(value, int):
             raise ValueError("due_day must be an Integer")
         self._due_day = value

@@ -37,25 +37,13 @@ def test_amount_validation():
 def test_to_dict():
     expense = Expense(
         name="Office Supplies",
-        amount="45.00",
+        amount=45.00,
         due_day=20,
         is_fixed=False
     )
     expense_dict = expense.to_dict()
-    
+
     assert expense_dict["name"] == "Office Supplies"
-    assert expense_dict["amount"] == Decimal("45.00")
+    assert expense_dict["amount"] == str(Decimal("45.00"))
     assert expense_dict["due_day"] == 20
     assert expense_dict["is_fixed"] is False
-
-
-#     def test_to_dict(self):
-#         e = Expense("North Shore Gas", "89.50", 7, True)
-#         d = e.to_dict()
-#         self.assertIn("name", d)
-#         self.assertIn("amount", d)
-#         self.assertEqual(d["name"], "North Shore Gas")
-
-
-# if __name__ == "__main__":
-#     unittest.main()

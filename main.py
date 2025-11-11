@@ -1,4 +1,4 @@
-from expense import Expense
+from expenses.models.expense import Expense
 
 exp = Expense("Internet Bill", 59.99, due_day=15, is_fixed=True)
 print(exp)

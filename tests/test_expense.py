@@ -12,7 +12,7 @@ def test_basic_contruction():
         is_fixed=True
     )
 
-    assert expense.title == "Lunch"
+    assert expense.name == "Lunch"
 # class TestExpense(unittest.TestCase):
 #     def test_basic_construction(self):
 #         e = Expense("Comcast", 165.00, due_day=10, is_fixed=False)

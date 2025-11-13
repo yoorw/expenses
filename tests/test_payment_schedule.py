@@ -34,6 +34,41 @@ def test_basic_construction():
     assert schedule.tolerance == Decimal("0.05")
     # assert schedule.is_balanced is False
 
+def test_calculate_period_totals():
+    expense1 = Expense(
+        name="Rent",
+        amount=Decimal("1200.00"),
+        due_day=1,
+        is_fixed=True
+    )
+    print(f"[test_basic] expense 1 has amount: {expense1.amount} and type is: {type(expense1.amount)}")
+
+    expense2 = Expense(
+        name="Utilities",
+        amount=Decimal("150.00"),
+        due_day=15,
+        is_fixed=False
+    )
+
+    expense3 = Expense(
+        name="Cable",
+        amount=Decimal("270.00"),
+        due_day=15,
+        is_fixed=False
+    )
+
+    schedule = PaymentSchedule(
+        period_1_expenses=[expense1, expense2],
+        period_2_expenses=[expense2, expense3],
+        tolerance=Decimal("0.05")
+    )
+
+    schedule.period_1_total = schedule._calculate_period_total(schedule.period_1_expenses)
+    assert schedule.period_1_total == Decimal("1350.00")
+
+    schedule.period_2_total = schedule._calculate_period_total(schedule.period_2_expenses)
+    assert schedule.period_2_total == Decimal("420.00")
+
 def test_periods_balanced():
     expense1 = Expense(
         name="Subscription",
@@ -54,6 +89,11 @@ def test_periods_balanced():
         tolerance=Decimal("2")
     )
 
+    schedule.period_1_total = schedule._calculate_period_total(schedule.period_1_expenses)
+    schedule.period_2_total = schedule._calculate_period_total(schedule.period_2_expenses)
+
+    schedule.is_balanced = schedule._check_balance(schedule.period_1_total, schedule.period_2_total)
+
     assert schedule.is_balanced is True    
 
 def test_periods_not_balanced():
@@ -73,8 +113,12 @@ def test_periods_not_balanced():
     schedule = PaymentSchedule(
         period_1_expenses=[expense1],
         period_2_expenses=[expense2],
-        acceptable_difference=Decimal("0.10")
+        tolerance=Decimal("2")
     )
+
+    schedule.period_1_total = schedule._calculate_period_total(schedule.period_1_expenses)
+    schedule.period_2_total = schedule._calculate_period_total(schedule.period_2_expenses)
+    schedule.is_balanced = schedule._check_balance(schedule.period_1_total, schedule.period_2_total)
 
     assert schedule.is_balanced is False
 

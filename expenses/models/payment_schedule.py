@@ -42,22 +42,24 @@ class PaymentSchedule:
         # return total.quantize(Decimal("0.01"))
         return total
     
-    def _check_balance(self) -> bool:
+    def _check_balance(self, period_1, period_2) -> bool:
         """Check if the difference between periods is within acceptable range"""
-        self.period_1_total = self._calculate_period_total(self.period_1_expenses),
-        self.period_2_total = self._calculate_period_total(self.period_2_expenses),
-        print(f"[_check_balance] period 1 total: {self.period_1_total} and type: {type(self.period_1_total)}")
-        print(f"[_check_balance] period 2 total: {self.period_2_total} and type: {type(self.period_2_total)}")
-        total = self.period_1_total + self.period_2_total
+        # self.period_1_total = self._calculate_period_total(self.period_1_expenses),
+        # self.period_2_total = self._calculate_period_total(self.period_2_expenses),
+        # print(f"[_check_balance] period 1 total: {self.period_1_total} and type: {type(self.period_1_total)}")
+        # print(f"[_check_balance] period 2 total: {self.period_2_total} and type: {type(self.period_2_total)}")
+        total = period_1 + period_2
         print(f"[_check_balance] TOTAL: {total} and type is: {type(total)}")
         if total == 0:
             return True  # No expenses, considered balanced
-        difference = abs(self.period_1_total - self.period_2_total)
+        difference = abs(period_1 - period_2)
         acceptable_difference = (total / 2) * (self.tolerance / 100)
 
         self.is_balanced = False
 
         if difference <= acceptable_difference:
             self.is_balanced = True
+
+        return self.is_balanced
         
     

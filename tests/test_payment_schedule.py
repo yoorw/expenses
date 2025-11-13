@@ -11,7 +11,6 @@ def test_basic_construction():
         due_day=1,
         is_fixed=True
     )
-    print(f"[test_basic] expense 1 has amount: {expense1.amount} and type is: {type(expense1.amount)}")
 
     expense2 = Expense(
         name="Utilities",
@@ -26,13 +25,9 @@ def test_basic_construction():
         tolerance=Decimal("0.05")
     )
 
-
-    # assert schedule.period_1_total == Decimal("600.00")
-    # assert schedule.period_2_total == Decimal("750.00")
     assert schedule.period_1_expenses == [expense1, expense2]
     assert schedule.period_2_expenses == [expense2, expense1]
     assert schedule.tolerance == Decimal("0.05")
-    # assert schedule.is_balanced is False
 
 def test_calculate_period_totals():
     expense1 = Expense(
@@ -41,7 +36,6 @@ def test_calculate_period_totals():
         due_day=1,
         is_fixed=True
     )
-    print(f"[test_basic] expense 1 has amount: {expense1.amount} and type is: {type(expense1.amount)}")
 
     expense2 = Expense(
         name="Utilities",

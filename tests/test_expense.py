@@ -1,35 +1,49 @@
-import unittest
 from datetime import date
 from decimal import Decimal
+import pytest 
 
-from expense import Expense
+from expenses.models.expense import Expense
 
+def test_basic_contruction():
+    expense = Expense(
+        name="Lunch",
+        amount=12.5,
+        due_day=15,
+        is_fixed=True
+    )
 
-class TestExpense(unittest.TestCase):
-    def test_basic_construction(self):
-        e = Expense("Lunch", 12.5, currency="USD", date_=date(2025, 11, 3), category="meals", notes="team lunch", paid=True)
-        self.assertEqual(e.title, "Lunch")
-        self.assertEqual(e.amount, Decimal("12.50"))
-        self.assertEqual(e.currency, "USD")
-        self.assertEqual(e.date, date(2025, 11, 3))
-        self.assertEqual(e.category, "meals")
-        self.assertEqual(e.notes, "team lunch")
-        self.assertTrue(e.paid)
+    assert expense.name == "Lunch"
+    assert expense.amount == Decimal("12.50")
+    assert expense.due_day == 15
+    assert expense.is_fixed is True
 
-    def test_amount_validation(self):
-        with self.assertRaises(ValueError):
-            Expense("Bad", "not-a-number")
+def test_amount_validation():
+    with pytest.raises(ValueError):
+        Expense(
+            name="BadAmount",
+            amount="not-a-number",
+            due_day=10,
+            is_fixed=False
+        )
+    
+    with pytest.raises(ValueError):
+        Expense(
+            name="NegativeAmount",
+            amount=-20,
+            due_day=5,
+            is_fixed=True
+        )
 
-        with self.assertRaises(ValueError):
-            Expense("Negative", -5)
+def test_to_dict():
+    expense = Expense(
+        name="Office Supplies",
+        amount=45.00,
+        due_day=20,
+        is_fixed=False
+    )
+    expense_dict = expense.to_dict()
 
-    def test_to_dict(self):
-        e = Expense("Coffee", "2.3")
-        d = e.to_dict()
-        self.assertIn("title", d)
-        self.assertIn("amount", d)
-        self.assertEqual(d["title"], "Coffee")
-
-
-if __name__ == "__main__":
-    unittest.main()
+    assert expense_dict["name"] == "Office Supplies"
+    assert expense_dict["amount"] == str(Decimal("45.00"))
+    assert expense_dict["due_day"] == 20
+    assert expense_dict["is_fixed"] is False

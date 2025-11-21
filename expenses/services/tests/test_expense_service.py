@@ -1,7 +1,7 @@
 import pytest
 from decimal import Decimal
 
-from services.expense_service import (
+from expenses.services.expense_service import (
     clean_name,
     clean_amount,
     clean_due_day,

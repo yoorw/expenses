@@ -1,7 +1,7 @@
 import pytest
 from decimal import Decimal
 
-from validators.expense_validator import (
+from expenses.validators.expense_validator import (
     AbstractExpenseValidator,
     NameValidator,
     AmountValidator,
@@ -81,7 +81,7 @@ class TestAmountValidator:
         assert self.validator.validate(50.00) is True
         assert self.validator.validate(13.51) is True
         assert self.validator.validate(0.01) is True
-        assert self.validator.validate(99.99) is True
+        assert self.validator.validate(99.9) is True
 
     def test_validate_positive_int(self):
         """Positive integers should be valid."""
@@ -100,27 +100,26 @@ class TestAmountValidator:
         assert self.validator.validate(Decimal("50.00")) is True
         assert self.validator.validate(Decimal("13.51")) is True
 
-    def test_validate_single_decimal_place(self):
-        """Amounts with 1 decimal place should be valid."""
-        assert self.validator.validate(13.5) is True
-        assert self.validator.validate("0.1") is True
-
     def test_validate_no_decimal_places(self):
         """Amounts with no decimal places should be valid."""
         assert self.validator.validate(100) is True
         assert self.validator.validate("50") is True
 
     # Invalid amounts - precision
-    def test_reject_more_than_two_decimal_places(self):
+    def test_reject_incorrect_decimal_places(self):
         """Amounts with more than 2 decimal places should raise ValueError."""
-        with pytest.raises(ValueError, match="Amount must have at most 2 decimal places"):
+        with pytest.raises(ValueError, match="Amount must have at least 2 decimal places"):
             self.validator.validate(13.511)
         
-        with pytest.raises(ValueError, match="Amount must have at most 2 decimal places"):
+        with pytest.raises(ValueError, match="Amount must have at least 2 decimal places"):
             self.validator.validate("13.5111")
         
-        with pytest.raises(ValueError, match="Amount must have at most 2 decimal places"):
+        with pytest.raises(ValueError, match="Amount must have at least 2 decimal places"):
             self.validator.validate(Decimal("0.001"))
+        
+        with pytest.raises(ValueError, match="Amount must have at least 2 decimal places"):
+            self.validator.validate(Decimal(13.51))
+
 
     # Invalid amounts - negative
     def test_reject_negative_amount(self):

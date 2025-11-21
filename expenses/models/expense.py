@@ -2,18 +2,22 @@ from datetime import date, datetime
 from decimal import Decimal, InvalidOperation
 from typing import Optional, Dict, Any
 
+from validators.expense_validator import (
+    AbstractExpenseValidator,
+    NameValidator,
+    AmountValidator,
+    DueDayValidator,
+    IsFixedValidator
+)
 
 class Expense:
     """Represent a single expense item.
 
     Attributes
-    - title: short description of the expense
-    - amount: Decimal monetary amount (must be >= 0)
-    - currency: ISO-style currency code (default: 'USD')
-    - date: date of the expense (defaults to today)
-    - category: optional category string (e.g., 'travel', 'meals')
-    - notes: optional longer text
-    - paid: whether the expense was paid
+    - name: name of expense
+    - amount: Decimal monetary amount (must be >= 0 and have at most 2 decimal places)
+    - due_day: day of the month the expense is typically due 
+    - is_fixed: True if expense MUST be paid (e.g., rent), False if optional (e.g., entertainment)
     """
 
     def __init__(
@@ -23,7 +27,6 @@ class Expense:
         due_day: int,
         is_fixed: bool,
     ) -> None:
-        # Basic validation and assignments
         self.name = name
         self.amount = amount
         self.due_day = due_day
@@ -37,6 +40,15 @@ class Expense:
 
     @name.setter
     def name(self, value: str) -> None:
+        try:
+            name_validator = NameValidator()
+            
+   
+        if name_validator.validate(value):
+
+        if name_validator.validate(value) is not True:
+        }
+
         if not isinstance(value, str) or not value.strip():
             raise ValueError("Name must be a non-empty string")
         self._name = value.strip()

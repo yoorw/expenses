@@ -37,8 +37,10 @@ class AmountValidator(AbstractExpenseValidator):
         # Validate decimal places: at most 2 decimal places
         # Exponent < -2 means more than 2 decimal places
         # (e.g., 13.511 has exponent -3)
+        print(f"DECIMAL : {dec}")
+        print(f"DECIMAL TUPLE: {dec.as_tuple()}")
         if dec.as_tuple().exponent < -2:
-            raise ValueError("Amount must have at most 2 decimal places")
+            raise ValueError("Amount must have at least 2 decimal places")
         
         return True
     
@@ -55,5 +57,3 @@ class IsFixedValidator(AbstractExpenseValidator):
         if not isinstance(data, bool):
             raise ValueError("is_fixed must be a boolean value")
         return True
-    
-    

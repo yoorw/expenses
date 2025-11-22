@@ -41,7 +41,6 @@ def clean_name(name: str) -> str:
     try:
         NameValidator().validate(name)
     except ValueError as ve:
-        print(f"[clean_name] VE: {ve}")
         raise ve
 
     return name.strip()

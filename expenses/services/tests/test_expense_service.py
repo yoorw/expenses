@@ -25,7 +25,17 @@ class TestCleanAmount:
         assert cleaned == Decimal("123.40")
 
     def test_clean_amount_valid_float(self):
-        amount = 123.40
+        amount = 123.45
+        cleaned = clean_amount(amount)
+        assert cleaned == Decimal("123.45")
+
+    def test_clean_amount_valid_string_one_decimal(self):
+        amount = "123.4"
+        cleaned = clean_amount(amount)
+        assert cleaned == Decimal("123.40")
+
+    def test_clean_amount_valid_float_one_decimal(self):
+        amount = 123.4
         cleaned = clean_amount(amount)
         assert cleaned == Decimal("123.40")
 
@@ -35,11 +45,8 @@ class TestCleanAmount:
         assert cleaned == Decimal("123.00")
 
     def test_error_amount_has_incorrect_decimal_places(self):
-        with pytest.raises(ValueError, match={"error": "Amount must have 2 decimal places"}):
-            clean_amount("123.46")
-
-        with pytest.raises(ValueError):
-            clean_amount("123.4")
+        with pytest.raises(ValueError, match="Amount must have at least 2 decimal places"):
+            clean_amount("123.461")
 
     def test_error_clean_amount_alpha_chars(self):
         with pytest.raises(ValueError):

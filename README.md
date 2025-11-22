@@ -35,7 +35,7 @@ Run these commands from a zsh shell inside the project directory :
    - `pipenv install --dev` 
 
 ### Run Unit Tests 
-`pipenv run pytest tests/`
+`pipenv run pytest expenses/`
 
 ### Run Application
 `pipenv run python main.py`

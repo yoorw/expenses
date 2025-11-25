@@ -66,12 +66,15 @@ def clean_due_day(due_day: int) -> int:
 
     return due_day
 
-def clean_is_fixed(is_fixed: bool) -> bool:
+def clean_is_fixed(is_fixed: str) -> bool:
     """Clean and return the is_fixed value as a boolean."""
 
     try:
-        IsFixedValidator().validate(is_fixed)
+        if IsFixedValidator().validate(is_fixed):
+            if is_fixed.lower() in ("yes", "y", "true", "1"):
+                return True
+            elif is_fixed.lower() in ("no", "n", "false", "0"):
+                return False
+            
     except ValueError as ve:
         raise ve
-
-    return is_fixed

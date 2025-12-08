@@ -66,12 +66,12 @@ def clean_due_day(due_day: int) -> int:
 
     return due_day
 
-def clean_is_fixed(is_fixed: bool) -> bool:
-    """Clean and return the is_fixed value as a boolean."""
+def clean_enforce_due_day(enforce_due_day: bool) -> bool:
+    """Clean and return the enforce_due_day value as a boolean."""
 
     try:
-        IsFixedValidator().validate(is_fixed)
+        IsFixedValidator().validate(enforce_due_day)
     except ValueError as ve:
         raise ve
 
-    return is_fixed
+    return enforce_due_day

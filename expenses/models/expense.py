@@ -10,7 +10,7 @@ class Expense:
     - name: name of expense
     - amount: Decimal monetary amount (must be >= 0 and have at most 2 decimal places)
     - due_day: day of the month the expense is typically due 
-    - is_fixed: True if expense MUST be paid (e.g., rent), False if optional (e.g., entertainment)
+    - enforce_due_day: True if expense MUST be paid (e.g., rent), False if optional (e.g., entertainment)
     """
 
     def __init__(
@@ -18,12 +18,12 @@ class Expense:
         name: str,
         amount: Decimal,
         due_day: int,
-        is_fixed: bool,
+        enforce_due_day: bool,
     ) -> None:
         self.name = name
         self.amount = amount
         self.due_day = due_day
-        self.is_fixed = is_fixed
+        self.enforce_due_day = enforce_due_day
 
 
     # name
@@ -58,24 +58,24 @@ class Expense:
     def due_day(self, value: int) -> None:
         self._due_day = value
 
-    # is_fixed
+    # enforce_due_day
     @property
-    def is_fixed(self) -> bool:
-        return self._is_fixed
+    def enforce_due_day(self) -> bool:
+        return self.enforce_due_day
 
-    @is_fixed.setter
-    def is_fixed(self, value: bool) -> None:
-        self._is_fixed = value
+    @enforce_due_day.setter
+    def enforce_due_day(self, value: bool) -> None:
+        self._enforce_due_day = value
 
     def to_dict(self) -> Dict[str, Any]:
         return {
             "name": self.name,
             "amount": str(self.amount),
             "due_day": self.due_day,
-            "is_fixed": self.is_fixed
+            "enforce_due_day": self.enforce_due_day
         }
 
     def __repr__(self) -> str:
         return (
-            f"Expense(name={self.name!r}, amount={self.amount!r}, due_date={self.due_day!r}, is_fixed={self.is_fixed}"
+            f"Expense(name={self.name!r}, amount={self.amount!r}, due_date={self.due_day!r}, enforce_due_day={self.enforce_due_day}"
         )

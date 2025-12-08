@@ -5,7 +5,7 @@ from expenses.services.expense_service import (
     clean_name,
     clean_amount,
     clean_due_day,
-    clean_is_fixed
+    clean_enforce_due_day
 )
 
 class TestCleanName:
@@ -71,16 +71,16 @@ class TestCleanDueDay:
             clean_due_day("fifteen")
 
 class TestCleanIsFixed:
-    def test_clean_is_fixed_valid_true(self):
-        is_fixed = True
-        cleaned = clean_is_fixed(is_fixed)
+    def test_clean_enforce_due_day_valid_true(self):
+        enforce_due_day = True
+        cleaned = clean_enforce_due_day(enforce_due_day)
         assert cleaned is True
 
-    def test_clean_is_fixed_valid_false(self):
-        is_fixed = False
-        cleaned = clean_is_fixed(is_fixed)
+    def test_clean_enforce_due_day_valid_false(self):
+        enforce_due_day = False
+        cleaned = clean_enforce_due_day(enforce_due_day)
         assert cleaned is False
 
-    def test_error_is_fixed_not_boolean(self):
+    def test_error_enforce_due_day_not_boolean(self):
         with pytest.raises(ValueError):
-            clean_is_fixed("yes")
+            clean_enforce_due_day("yes")

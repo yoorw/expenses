@@ -220,31 +220,31 @@ class TestIsFixedValidator:
 
     def test_reject_non_boolean_int(self):
         """Integer 0 or 1 should raise ValueError (even though they're truthy/falsy)."""
-        with pytest.raises(ValueError, match="is_fixed must be a boolean value"):
+        with pytest.raises(ValueError, match="enforce_due_day must be a boolean value"):
             self.validator.validate(0)
         
-        with pytest.raises(ValueError, match="is_fixed must be a boolean value"):
+        with pytest.raises(ValueError, match="enforce_due_day must be a boolean value"):
             self.validator.validate(1)
 
     def test_reject_non_boolean_string(self):
         """String "true" or "false" should raise ValueError."""
-        with pytest.raises(ValueError, match="is_fixed must be a boolean value"):
+        with pytest.raises(ValueError, match="enforce_due_day must be a boolean value"):
             self.validator.validate("true")
         
-        with pytest.raises(ValueError, match="is_fixed must be a boolean value"):
+        with pytest.raises(ValueError, match="enforce_due_day must be a boolean value"):
             self.validator.validate("false")
 
     def test_reject_non_boolean_none(self):
         """None should raise ValueError."""
-        with pytest.raises(ValueError, match="is_fixed must be a boolean value"):
+        with pytest.raises(ValueError, match="enforce_due_day must be a boolean value"):
             self.validator.validate(None)
 
     def test_reject_non_boolean_list(self):
         """Non-boolean types should raise ValueError."""
-        with pytest.raises(ValueError, match="is_fixed must be a boolean value"):
+        with pytest.raises(ValueError, match="enforce_due_day must be a boolean value"):
             self.validator.validate([])
         
-        with pytest.raises(ValueError, match="is_fixed must be a boolean value"):
+        with pytest.raises(ValueError, match="enforce_due_day must be a boolean value"):
             self.validator.validate({})
 
 
@@ -256,19 +256,19 @@ class TestValidatorsIntegration:
         name_validator = NameValidator()
         amount_validator = AmountValidator()
         due_day_validator = DueDayValidator()
-        is_fixed_validator = IsFixedValidator()
+        enforce_due_day_validator = IsFixedValidator()
         
         assert name_validator.validate("Rent") is True
         assert amount_validator.validate(1500.00) is True
         assert due_day_validator.validate(1) is True
-        assert is_fixed_validator.validate(True) is True
+        assert enforce_due_day_validator.validate(True) is True
 
     def test_all_validators_reject_invalid_data(self):
         """All validators should reject invalid data."""
         name_validator = NameValidator()
         amount_validator = AmountValidator()
         due_day_validator = DueDayValidator()
-        is_fixed_validator = IsFixedValidator()
+        enforce_due_day_validator = IsFixedValidator()
         
         with pytest.raises(ValueError):
             name_validator.validate("")
@@ -280,4 +280,4 @@ class TestValidatorsIntegration:
             due_day_validator.validate(32)
         
         with pytest.raises(ValueError):
-            is_fixed_validator.validate("yes")
+            enforce_due_day_validator.validate("yes")

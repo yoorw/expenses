@@ -53,5 +53,5 @@ class DueDayValidator(AbstractExpenseValidator):
 class IsFixedValidator(AbstractExpenseValidator):
     def validate(self, data):
         if not isinstance(data, bool):
-            raise ValueError("is_fixed must be a boolean value")
+            raise ValueError("enforce_due_day must be a boolean value")
         return True

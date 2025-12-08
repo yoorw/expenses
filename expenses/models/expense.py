@@ -61,7 +61,7 @@ class Expense:
     # enforce_due_day
     @property
     def enforce_due_day(self) -> bool:
-        return self.enforce_due_day
+        return self._enforce_due_day
 
     @enforce_due_day.setter
     def enforce_due_day(self, value: bool) -> None:

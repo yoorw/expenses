@@ -19,7 +19,8 @@ def get_valid_input(prompt: str):
                 continue 
 
             elif user_input.lower() == "q" or user_input.lower() == "quit":
-                break 
+                print(" Exiting input.")
+                return None
 
             else:
                 return user_input
@@ -43,26 +44,60 @@ def add_expense():
     }
 
 
-    while True:
-        for field, prompt in expense_fields.items():
-            try: 
-                user_input = get_valid_input(prompt)
-
-                if field == "Name":
+    # while True:
+    for field, prompt in expense_fields.items():
+        if field == "Name":
+            while True:
+                try:
+                    user_input = get_valid_input(prompt)
                     name = clean_name(user_input)
+                    if name is None: 
+                        break
 
-                if field == "Amount":
+                except ValueError as e:
+                    print(f"  ✗ Error adding expense field: {e}")
+                    print("  Please re-enter the Expense Name again.\n")
+                    continue
+
+        elif field == "Amount":
+            while True:
+                try:
+                    user_input = get_valid_input(prompt)
                     amount = clean_amount(user_input)
+                    if amount is None:
+                        break
+                
+                except ValueError as e:
+                    print(f"  ✗ Error adding expense field: {e}")
+                    print("  Please re-enter the Expense Amount again.\n")
+                    continue
 
-                if field == "Due Day":
+        elif field == "Due Day":
+            while True:
+                try:
+                    user_input = get_valid_input(prompt)
                     due_day = clean_due_day(user_input)
+                    if due_day is None:
+                        break
+                
+                except ValueError as e:
+                    print(f"  ✗ Error adding expense field: {e}")
+                    print("  Please re-enter the Expense Due Day again.\n")
+                    continue
 
-                if field == "Fixed Expense":
+        elif field == "Fixed Expense":
+            while True:
+                try:
+                    user_input = get_valid_input(prompt)
                     is_fixed = clean_is_fixed(user_input)
+                    if is_fixed is None:
+                        break
 
-            except ValueError as e:
-                print(f"  ✗ Error adding expense field: {e}")
-                continue
+                except ValueError as e:
+                    print(f" ✗ Error adding expense field: {e}")
+                    print(" Please re-enter if the Expense Due Date is a flexible date or not.\n")
+                    continue
+
 
         expense = Expense(
             name=name,
@@ -73,6 +108,7 @@ def add_expense():
         print(f"  ✓ Expense '{name}' created successfully!")
 
         return expense
+
 
 
 def display_expenses(expenses):

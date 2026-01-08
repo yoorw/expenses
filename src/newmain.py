@@ -1,4 +1,4 @@
-from decimal import Decimal
+from decimal import Decimal, ROUND_HALF_UP
 
 def is_field_valid(field: str) -> bool:
     """Check if the input field is valid (not empty)."""
@@ -6,7 +6,7 @@ def is_field_valid(field: str) -> bool:
         print(" Input cannot be empty. Please try again.")
         return False
 
-    print(f"Expense name entered: {field}")
+    print(f"Expense value entered: {field}")
     return True
 
 def is_quit(field: str) -> bool:
@@ -60,20 +60,20 @@ def main():
         if add_expense_response in ["yes", "y"]:
             continue
         elif add_expense_response in ["no", "n"]:
-            print(f"These are your expenses: \n {expenses}")
-            print("Exiting input.")
+            # print(f"\nThese are your expenses: \n {expenses}")
+            print("\nThese are your expenses:\n")
+
+            for expense in expenses:
+                amount_formatted = expense['amount'].quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
+                print(f"  - {expense['name']}: ${amount_formatted:,.2f}")
+
+            print("\nExiting input.")
             add_expenses = False
         elif is_quit(add_expense_response):
             add_expenses = False 
         else:
             print("Invalid Response. Exiting input.")
             break
-
-
-            
-
-
-
 
 
 

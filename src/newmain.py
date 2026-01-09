@@ -45,6 +45,21 @@ def main():
         if amount is None:
             break
 
+        # due_date
+        due_date = request_field("Enter expense due date (1-31): ")
+        if due_date is None:
+            break
+
+        # fixed_due_date 
+        fixed_due_date = request_field("Is the Expense Due Date a fixed date every month? (yes/no): ")
+        if fixed_due_date is None:
+            break
+
+        is_enabled = request_field("Is the expense enabled? (yes/no): ")
+        if is_enabled is None:
+            break
+
+
         if name and amount:
             expenses.append(
                 {

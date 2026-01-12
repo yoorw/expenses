@@ -51,25 +51,24 @@ def create_expense() -> dict | None:        #TODO: return Expense object
         if fixed_due_date is None:
             return None
 
-        is_enabled = request_field("Is the expense enabled? (yes/no): ")
-        if is_enabled is None:
+        is_active = request_field("Is the expense an active, on-going expense? (yes/no): ")
+        if is_active is None:
             return None
         
-        if name and amount and due_date and fixed_due_date and is_enabled:
+        if name and amount and due_date and fixed_due_date and is_active:
             expense = {
                 "name": name,
                 "amount": Decimal(amount),
                 "due_date": due_date,
                 "fixed_due_date": fixed_due_date,
-                "is_enabled": is_enabled
+                "is_active": is_active
             }
 
             print(f"Expense entered: {expense}")
 
             return expense 
-
-
-def main():
+        
+def create_expenses() -> None: 
     expenses = []
     add_expenses = True 
 
@@ -103,6 +102,9 @@ def main():
             print("Invalid Response. Exiting input.")
             break
 
+
+def main():
+    create_expenses()
 
 
 

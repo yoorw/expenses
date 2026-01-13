@@ -1,4 +1,7 @@
+import json
 from decimal import Decimal, ROUND_HALF_UP
+
+from utils.decimalencoder import DecimalEncoder
 
 def is_field_valid(field: str) -> bool:
     """Check if the input field is valid (not empty)."""
@@ -94,13 +97,27 @@ def create_expenses() -> None:
                 amount_formatted = expense['amount'].quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
                 print(f"  - {expense['name']}: ${amount_formatted:,.2f}")
 
+            print("\nSaving expenses...")
+            save_expenses(expenses)
+
             print("\nExiting input.")
+
+
             add_expenses = False
         elif is_quit(add_expense_response):
             add_expenses = False 
         else:
             print("Invalid Response. Exiting input.")
             break
+
+def save_expenses(expenses: list) -> None:
+    """Save expenses to a file or database (not implemented)."""
+    file_path = "/Volumes/swdev/swdev_docs/expenses/expenses.json"
+    with open(file_path, 'w') as f:
+        json.dump(expenses, f, cls=DecimalEncoder, indent=4)
+
+    print(f"Expenses saved to {file_path}.")
+
 
 
 def main():

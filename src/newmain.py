@@ -54,6 +54,10 @@ def create_expense() -> dict | None:        #TODO: return Expense object
         if fixed_due_date is None:
             return None
 
+        is_split = request_field("Can the payment be split (2 payments per month)? (yes/no): ")
+        if is_split is None:
+            return None
+        
         is_active = request_field("Is the expense an active, on-going expense? (yes/no): ")
         if is_active is None:
             return None

@@ -112,12 +112,14 @@ def create_expenses() -> None:
 
 def save_expenses(expenses: list) -> None:
     """Save expenses to a file or database (not implemented)."""
-    file_path = "/Volumes/swdev/swdev_docs/expenses/expenses.json"
-    with open(file_path, 'w') as f:
+    # file_path = "/Volumes/swdev/swdev_docs/expenses/expenses.json"
+    file_name = request_field("Enter the name of the expenses file to save (e.g., expenses.json): ")
+    file_path = request_field("Enter full path directory to save the expenses file (e.g., /path/to/): ")
+    file_dir = file_path + file_name
+    with open(file_dir, 'w') as f:
         json.dump(expenses, f, cls=DecimalEncoder, indent=4)
 
-    print(f"Expenses saved to {file_path}.")
-
+    print(f"Expenses saved to {file_dir}.")
 
 
 def main():

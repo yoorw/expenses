@@ -76,7 +76,7 @@ def create_expense() -> dict | None:        #TODO: return Expense object
 
             return expense 
         
-def create_expenses() -> None: 
+def create_expenses() -> list[dict]: 
     expenses = []
     add_expenses = True 
 
@@ -126,9 +126,34 @@ def save_expenses(expenses: list) -> None:
 
     print(f"Expenses saved to {file_dir}.")
 
+def calculate_payment_amounts(expenses: list[dict]) -> list[dict]:
+    """Calculate payment amounts based on expenses (not implemented)."""
+    # Placeholder implementation
+    payment_plan = []
+
+    total_expense = sum(expense['amount'] for expense in expenses)
+    half_expense = (total_expense / 2).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
+
+        
+
+
+
+        
+
+
+    return payment_plan
+
+def schedule_payments(payment_plan: list[dict]) -> None:
+    """Schedule payments based on the payment plan (not implemented)."""
+    # Placeholder implementation
+    pass
+
+
 
 def main():
-    create_expenses()
+    expenses = create_expenses()
+    payment_plan = calculate_payment_amounts(expenses)
+    schedule_payments(payment_plan)
 
 
 

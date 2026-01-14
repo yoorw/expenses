@@ -68,6 +68,7 @@ def create_expense() -> dict | None:        #TODO: return Expense object
                 "amount": Decimal(amount),
                 "due_date": due_date,
                 "fixed_due_date": fixed_due_date,
+                "is_split": is_split,
                 "is_active": is_active
             }
 

@@ -126,22 +126,56 @@ def save_expenses(expenses: list) -> None:
 
     print(f"Expenses saved to {file_dir}.")
 
-def calculate_payment_amounts(expenses: list[dict]) -> list[dict]:
-    """Calculate payment amounts based on expenses (not implemented)."""
+def calculate_payment_split(expenses: list[dict]) -> tuple[list[dict], list[dict]]:
+    """Calculate payment amounts based on expenses. Uses Partition Backtracking Algorithm"""
     # Placeholder implementation
     payment_plan = []
 
     total_expense = sum(expense['amount'] for expense in expenses)
-    half_expense = (total_expense / 2).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
+    target = total_expense / 2
 
+    best_subset = []
+    best_diff = float('inf')
+
+    def backtrack(index: int, current_subset: list[dict], current_sum: Decimal):
+        nonlocal best_subset, best_diff
+
+        # best case: all expenses considered 
+        if index == len(expenses):
+            diff = abs(target - current_sum)
+            if diff < best_diff:
+                best_diff = diff
+                best_subset = list(current_subset)
+
+            return 
         
+        # Choice 1: Include the current expense in Subset 1
+        current_subset.append(expenses[index])
+        backtrack(index + 1, current_subset, current_sum + expenses[index]['amount'])
+        current_subset.pop() # Undo choice (backtrack)
+
+        # Choice 2: Exclude current expense from Subset 1
+        backtrack(index + 1, current_subset, current_sum)
+
+    # Start recursion
+    backtrack(0, [], 0)
+
+    # Organize results into payment plans
+    subset_1 = best_subset 
+    subset_2 = list(expenses)
+    for expense in subset_1:
+        # Remove one expense from subset_2
+        if expense in subset_2:
+            subset_2.remove(expense)
+
+    return subset_1, subset_2
 
 
-
-        
-
-
-    return payment_plan
+def create_payment_plan(expenses: list[dict]) -> tuple[list[dict], list[dict]]:
+    """Create a payment plan based on the expenses (not implemented)."""
+    subset_1, subset_2 = calculate_payment_split(expenses)
+    # confirm payment plan by outputting a breakdown of the 2 schedules and the expenses (name / amount) of each schedule and the difference 
+    
 
 def schedule_payments(payment_plan: list[dict]) -> None:
     """Schedule payments based on the payment plan (not implemented)."""

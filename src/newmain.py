@@ -186,8 +186,8 @@ def schedule_payments(payment_plan: list[dict]) -> None:
 
 def main():
     expenses = create_expenses()
-    payment_plan = calculate_payment_amounts(expenses)
-    schedule_payments(payment_plan)
+    schedule_1, schedule_2 = create_payment_plan(expenses)
+    schedule_payments(schedule_1, schedule_2)
 
 
 

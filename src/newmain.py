@@ -2,6 +2,7 @@ import json
 from decimal import Decimal, ROUND_HALF_UP
 
 from utils.decimalencoder import DecimalEncoder
+from utils.utils import decimal_to_currency
 
 def is_field_valid(field: str) -> bool:
     """Check if the input field is valid (not empty)."""
@@ -175,7 +176,37 @@ def create_payment_plan(expenses: list[dict]) -> tuple[list[dict], list[dict]]:
     """Create a payment plan based on the expenses (not implemented)."""
     subset_1, subset_2 = calculate_payment_split(expenses)
     # confirm payment plan by outputting a breakdown of the 2 schedules and the expenses (name / amount) of each schedule and the difference 
-    
+    # subset_1 total amount
+    total_1 = sum(expense['amount'] for expense in subset_1)
+    total_2 = sum(expense['amount'] for expense in subset_2)
+
+    expense_diff = abs(total_1 - total_2)
+
+    print("\nPayment Schedule 1:")
+    total_1_formatted = decimal_to_currency(total_1)
+    print(f"Total Amount: ${total_1_formatted:,.2f}")
+    print("Expenses:")
+    for expense in subset_1:
+        for expense_field, expense_value in expense.items():
+            if expense_field == "amount":
+                expense_value = decimal_to_currency(expense_value)
+
+            print(f"  - {expense_field}: {expense_value}")
+
+    print("\nPayment Schedule 2:")
+    total_2_formatted = decimal_to_currency(total_2)
+    print(f"Total Amount: ${total_2_formatted:,.2f}")
+    print("Expenses:")
+    for expense in subset_2:
+        for expense_field, expense_value in expense.items():
+            if expense_field == "amount":
+                expense_value = decimal_to_currency(expense_value)
+
+            print(f"  - {expense_field}: {expense_value}")
+
+    print(f"\nDifference between schedules: ${decimal_to_currency(expense_diff):,.2f}\n")
+
+
 
 def schedule_payments(payment_plan: list[dict]) -> None:
     """Schedule payments based on the payment plan (not implemented)."""

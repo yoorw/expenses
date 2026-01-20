@@ -110,6 +110,9 @@ def create_expenses() -> list[dict]:
 
 
             add_expenses = False
+
+            return expenses
+
         elif is_quit(add_expense_response):
             add_expenses = False 
         else:

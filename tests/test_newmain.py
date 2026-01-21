@@ -2,7 +2,7 @@ import pytest
 from unittest.mock import patch 
 from io import StringIO
 
-from src.newmain import is_field_valid, is_quit, main
+from src.main import is_field_valid, is_quit, main
 
 def test_main_with_field_valid():
     """Test main() with a valid expense name."""

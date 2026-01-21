@@ -209,9 +209,11 @@ def create_payment_plan(expenses: list[dict]) -> tuple[list[dict], list[dict]]:
 
     print(f"\nDifference between schedules: ${decimal_to_currency(expense_diff):,.2f}\n")
 
+    return subset_1, subset_2
 
 
-def schedule_payments(payment_plan: list[dict]) -> None:
+
+def schedule_payments(payment_plan_1: list[dict], payment_plan_2: list[dict]) -> None:
     """Schedule payments based on the payment plan (not implemented)."""
     # Placeholder implementation
     pass

@@ -214,11 +214,11 @@ def schedule_payments(payment_plan_1: list[dict], payment_plan_2: list[dict]) ->
     pass
 
 
-
 def main():
     expenses = create_expenses()
-    schedule_1, schedule_2 = create_payment_plan(expenses)
-    schedule_payments(schedule_1, schedule_2)
+    subset_1, subset_2 = calculate_payment_split(expenses)
+    print_payment_plan(subset_1, subset_2)
+    # schedule_payments(schedule_1, schedule_2)
 
 
 

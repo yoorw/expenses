@@ -124,16 +124,21 @@ def create_expenses() -> list[dict]:
             print("Invalid Response. Exiting input.")
             break
 
+
 def save_expenses(expenses: list) -> None:
     """Save expenses to a file or database (not implemented)."""
     # file_path = "/Volumes/swdev/swdev_docs/expenses/expenses.json"
-    file_name = request_field("Enter the name of the expenses file to save (e.g., expenses.json): ")
-    file_path = request_field("Enter full path directory to save the expenses file (e.g., /path/to/): ")
-    file_dir = file_path + file_name
-    with open(file_dir, 'w') as f:
-        json.dump(expenses, f, cls=DecimalEncoder, indent=4)
 
-    print(f"Expenses saved to {file_dir}.")
+    save_expenses = request_field("Do you want to save the Expenses as a file? (yes/no):")
+
+    if save_expenses in ["yes", "y"]:
+        file_name = request_field("Enter the name of the expenses file to save (e.g., expenses.json): ")
+        file_path = request_field("Enter full path directory to save the expenses file (e.g., /path/to/): ")
+        file_dir = file_path + file_name
+        with open(file_dir, 'w') as f:
+            json.dump(expenses, f, cls=DecimalEncoder, indent=4)
+
+        print(f"Expenses saved to {file_dir}.")
 
 def calculate_payment_split(expenses: list[dict]) -> tuple[list[dict], list[dict]]:
     """Calculate payment amounts based on expenses. Uses Partition Backtracking Algorithm"""

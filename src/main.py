@@ -4,6 +4,7 @@ from decimal import Decimal, ROUND_HALF_UP
 from utils.decimalencoder import DecimalEncoder
 from utils.utils import decimal_to_currency
 
+
 def is_field_valid(field: str) -> bool:
     """Check if the input field is valid (not empty)."""
     if not field or field == "":
@@ -13,12 +14,14 @@ def is_field_valid(field: str) -> bool:
     print(f"Expense value entered: {field}")
     return True
 
+
 def is_quit(field: str) -> bool:
     """Check if the input field is 'quit'."""
     if field.lower() == "quit" or field.lower() == "q":
         print(" Exiting input.")
         return True
     return False
+
 
 def request_field(input_prompt: str) -> str | None:
     valid_field = False 
@@ -33,7 +36,8 @@ def request_field(input_prompt: str) -> str | None:
         elif is_field_valid(field):
             # valid_field = True
             return field
-        
+
+
 def create_expense() -> dict | None:        #TODO: return Expense object 
         # expense name
         name = request_field("Enter expense name: ")
@@ -76,7 +80,8 @@ def create_expense() -> dict | None:        #TODO: return Expense object
             print(f"Expense entered: {expense}")
 
             return expense 
-        
+
+
 def create_expenses() -> list[dict]: 
     expenses = []
     add_expenses = True 

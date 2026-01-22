@@ -185,42 +185,27 @@ def calculate_payment_split(expenses: list[dict]) -> tuple[list[dict], list[dict
     return subset_1, subset_2
 
 
-def create_payment_plan(expenses: list[dict]) -> tuple[list[dict], list[dict]]:
+def print_payment_plan(subset_1: list[dict], subset_2: list[dict]) -> None:
     """Create a payment plan based on the expenses (not implemented)."""
-    subset_1, subset_2 = calculate_payment_split(expenses)
-    # confirm payment plan by outputting a breakdown of the 2 schedules and the expenses (name / amount) of each schedule and the difference 
-    # subset_1 total amount
-    total_1 = sum(expense['amount'] for expense in subset_1)
-    total_2 = sum(expense['amount'] for expense in subset_2)
+    totals = []
+    for idx, expenses in enumerate([subset_1, subset_2]):
+        total = sum(expense['amount'] for expense in expenses)
+        totals.append(total)
 
-    expense_diff = abs(total_1 - total_2)
+        print(f"\nPayment Schedule {idx+1}:")
+        total_formatted = decimal_to_currency(total)
+        print(f"Total Amount: ${total_formatted:,.2f}")
+        print("Expenses:")
+        for expense in expenses:
+            for expense_field, expense_val in expense.items():
+                if expense_field == "amount":
+                    expense_val = decimal_to_currency(expense_val)
 
-    print("\nPayment Schedule 1:")
-    total_1_formatted = decimal_to_currency(total_1)
-    print(f"Total Amount: ${total_1_formatted:,.2f}")
-    print("Expenses:")
-    for expense in subset_1:
-        for expense_field, expense_value in expense.items():
-            if expense_field == "amount":
-                expense_value = decimal_to_currency(expense_value)
+                print(f" - {expense_field}: {expense_val}")
 
-            print(f"  - {expense_field}: {expense_value}")
 
-    print("\nPayment Schedule 2:")
-    total_2_formatted = decimal_to_currency(total_2)
-    print(f"Total Amount: ${total_2_formatted:,.2f}")
-    print("Expenses:")
-    for expense in subset_2:
-        for expense_field, expense_value in expense.items():
-            if expense_field == "amount":
-                expense_value = decimal_to_currency(expense_value)
-
-            print(f"  - {expense_field}: {expense_value}")
-
+    expense_diff = abs(totals[0] - totals[1])
     print(f"\nDifference between schedules: ${decimal_to_currency(expense_diff):,.2f}\n")
-
-    return subset_1, subset_2
-
 
 
 def schedule_payments(payment_plan_1: list[dict], payment_plan_2: list[dict]) -> None:

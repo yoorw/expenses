@@ -140,10 +140,22 @@ def save_expenses(expenses: list) -> None:
 
         print(f"Expenses saved to {file_dir}.")
 
+def calculate_payment_plan(expenses: list[dict]) -> tuple[list[dict], list[dict]]:
+    # filter out split expenses 
+    nonsplit_expenses = [expense for expense in expenses if expense['is_split'].lower() in ['no', 'n']]
+    split_expenses = [expense for expense in expenses if expense['is_split'].lower() in ['yes', 'y']]
+
+    expenses_1, expenses_2 = calculate_payment_split(nonsplit_expenses)
+
+    # add back in expenses that can be split
+    expenses_1 = expenses_1 + split_expenses
+    expenses_2 = expenses_2 + split_expenses 
+
+    return expenses_1, expenses_2
+
+
 def calculate_payment_split(expenses: list[dict]) -> tuple[list[dict], list[dict]]:
     """Calculate payment amounts based on expenses. Uses Partition Backtracking Algorithm"""
-    # Placeholder implementation
-    payment_plan = []
 
     total_expense = sum(expense['amount'] for expense in expenses)
     target = total_expense / 2
@@ -216,7 +228,7 @@ def schedule_payments(payment_plan_1: list[dict], payment_plan_2: list[dict]) ->
 
 def main():
     expenses = create_expenses()
-    subset_1, subset_2 = calculate_payment_split(expenses)
+    subset_1, subset_2 = calculate_payment_plan(expenses)
     print_payment_plan(subset_1, subset_2)
     # schedule_payments(schedule_1, schedule_2)
 

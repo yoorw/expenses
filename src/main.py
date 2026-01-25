@@ -201,7 +201,7 @@ def print_payment_plan(subset_1: list[dict], subset_2: list[dict]) -> None:
     """Create a payment plan based on the expenses (not implemented)."""
     totals = []
     for idx, expenses in enumerate([subset_1, subset_2]):
-        total = sum(expense['amount'] for expense in expenses)
+        total = sum(expense['amount'] if expense['is_split'] in ['no', 'n'] else (expense['amount']/2) for expense in expenses)
         totals.append(total)
 
         print(f"\nPayment Schedule {idx+1}:")
@@ -214,6 +214,10 @@ def print_payment_plan(subset_1: list[dict], subset_2: list[dict]) -> None:
                     expense_val = decimal_to_currency(expense_val)
 
                 print(f" - {expense_field}: {expense_val}")
+
+                if expense_field == "is_split" and expnese_val in ['yes', 'y']:
+                    split_val = decimal_to_currency(expense_val / 2)
+                    print(f"   -> Split Amount for  {expense_field}: {expense_val}")
 
 
     expense_diff = abs(totals[0] - totals[1])

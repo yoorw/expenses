@@ -1,8 +1,8 @@
 import json
 from decimal import Decimal, ROUND_HALF_UP
 
-from utils.decimalencoder import DecimalEncoder
-from utils.utils import decimal_to_currency
+from src.utils.decimalencoder import DecimalEncoder
+from src.utils.utils import decimal_to_currency
 
 
 def is_field_valid(field: str) -> bool:
@@ -109,7 +109,7 @@ def create_expenses() -> list[dict]:
                 print(f"  - {expense['name']}: ${amount_formatted:,.2f}")
 
             print("\nSaving expenses...")
-            save_expenses(expenses)
+            # save_expenses(expenses)       #TODO: improve logic to save expenses
 
             print("\nExiting input.")
 

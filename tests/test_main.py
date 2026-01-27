@@ -51,21 +51,24 @@ def test_calculate_payment_split():
     ]
 
     expected_exp_1 = [
-        {"name": "expense_name_2", "amount": Decimal("165"), "due_date": "7", "is_split": "no", "is_active": "yes", "fixed_due_date": "yes"},
-        {"name": "expense_name_4", "amount": Decimal("160"), "due_date": "", "is_split": "no", "is_active": "yes", "fixed_due_date": "no"},
-        {"name": "expense_name_5", "amount": Decimal("330.55"), "due_date": "10", "is_split": "no", "is_active": "yes", "fixed_due_date": "yes"},
-        {"name": "expense_name_7", "amount": Decimal("382.02"), "due_date": "10", "is_split": "no", "is_active": "yes", "fixed_due_date": "yes"},
+        {"name": "expense_name_1", "amount": Decimal("407"), "due_date": "1", "is_split": "no", "is_active": "yes", "fixed_due_date": "yes"},
+        {"name": "expense_name_3", "amount": Decimal("270"), "due_date": "10", "is_split": "no", "is_active": "yes", "fixed_due_date": "yes"},
+        {"name": "expense_name_6", "amount": Decimal("360"), "due_date": "", "is_split": "no", "is_active": "yes", "fixed_due_date": "no"},
         {"name": "expense_name_8", "amount": Decimal("80"), "due_date": "5", "is_split": "no", "is_active": "yes", "fixed_due_date": "yes"},
     ]
 
     expected_exp_2 = [
-        {"name": "expense_name_1", "amount": Decimal("407"), "due_date": "1", "is_split": "no", "is_active": "yes", "fixed_due_date": "yes"},
-        {"name": "expense_name_3", "amount": Decimal("270"), "due_date": "10", "is_split": "no", "is_active": "yes", "fixed_due_date": "yes"},
-        {"name": "expense_name_6", "amount": Decimal("360"), "due_date": "", "is_split": "no", "is_active": "yes", "fixed_due_date": "no"},
+        {"name": "expense_name_2", "amount": Decimal("165"), "due_date": "7", "is_split": "no", "is_active": "yes", "fixed_due_date": "yes"},
+        {"name": "expense_name_4", "amount": Decimal("160"), "due_date": "", "is_split": "no", "is_active": "yes", "fixed_due_date": "no"},
+        {"name": "expense_name_5", "amount": Decimal("330.55"), "due_date": "10", "is_split": "no", "is_active": "yes", "fixed_due_date": "yes"},
+        {"name": "expense_name_7", "amount": Decimal("382.02"), "due_date": "10", "is_split": "no", "is_active": "yes", "fixed_due_date": "yes"},
         {"name": "expense_name_9", "amount": Decimal("80"), "due_date": "28", "is_split": "no", "is_active": "yes", "fixed_due_date": "yes"},
     ]
 
     test_exp_1, test_exp_2 = calculate_payment_split(test_expenses)
+
+    print(f"Test Expense 1: {test_exp_1}")
+    print(f"Test Expense 2: {test_exp_2}")
 
     assert test_exp_1 == expected_exp_1
     assert test_exp_2 == expected_exp_2

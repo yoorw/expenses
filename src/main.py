@@ -212,6 +212,7 @@ def print_payment_plan(subset_1: list[dict], subset_2: list[dict]) -> None:
         print(f"Total Amount: ${total_formatted:,.2f}")
         print("Expenses:")
         for expense in expenses:
+            print("-"*20)
             for expense_field, expense_val in expense.items():
                 # convert amount field to currency format
                 expense_amt = decimal_to_currency(expense['amount'])
@@ -221,9 +222,10 @@ def print_payment_plan(subset_1: list[dict], subset_2: list[dict]) -> None:
 
                 print(f" - {expense_field}: {expense_val}")
 
-                if expense['is_split'] in ['yes', 'y']:
-                    split_val = decimal_to_currency(expense['amount'] / 2)
-                    print(f"   -> Split Amount for  {expense_field}: {split_val.quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)}")
+            # if the expense can be split, show split amount
+            if expense['is_split'] in ['yes', 'y']:
+                split_val = decimal_to_currency(expense['amount'] / 2)
+                print(f"   -> Split Amount for {expense['name']}: {split_val.quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)}")
 
 
     expense_diff = abs(totals[0] - totals[1])

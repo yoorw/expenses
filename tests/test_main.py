@@ -105,9 +105,6 @@ def test_calculate_payment_plan_with_split_expenses():
 
     test_exp_1, test_exp_2 = calculate_payment_plan(test_expenses)
 
-    print(f"test_exp_1: {test_exp_1}")
-    print(f"test_exp_2: {test_exp_2}")
-
     assert test_exp_1 == expected_exp_1
     assert test_exp_2 == expected_exp_2
 

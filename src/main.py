@@ -145,6 +145,9 @@ def calculate_payment_plan(expenses: list[dict]) -> tuple[list[dict], list[dict]
     nonsplit_expenses = [expense for expense in expenses if expense['is_split'].lower() in ['no', 'n']]
     split_expenses = [expense for expense in expenses if expense['is_split'].lower() in ['yes', 'y']]
 
+    print(f"nonsplit_expenses: {nonsplit_expenses}")
+    print(f"split_expenses: {split_expenses}")
+
     expenses_1, expenses_2 = calculate_payment_split(nonsplit_expenses)
 
     # add back in expenses that can be split
@@ -210,14 +213,17 @@ def print_payment_plan(subset_1: list[dict], subset_2: list[dict]) -> None:
         print("Expenses:")
         for expense in expenses:
             for expense_field, expense_val in expense.items():
+                # convert amount field to currency format
+                expense_amt = decimal_to_currency(expense['amount'])
+
                 if expense_field == "amount":
-                    expense_val = decimal_to_currency(expense_val)
+                    expense_val = expense_amt.quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
 
                 print(f" - {expense_field}: {expense_val}")
 
-                if expense_field == "is_split" and expnese_val in ['yes', 'y']:
-                    split_val = decimal_to_currency(expense_val / 2)
-                    print(f"   -> Split Amount for  {expense_field}: {expense_val}")
+                if expense['is_split'] in ['yes', 'y']:
+                    split_val = decimal_to_currency(expense['amount'] / 2)
+                    print(f"   -> Split Amount for  {expense_field}: {split_val.quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)}")
 
 
     expense_diff = abs(totals[0] - totals[1])

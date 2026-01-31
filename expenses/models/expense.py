@@ -19,15 +19,19 @@ class Expense:
     def __init__(
         self,
         name: str,
-        amount: Any,
-        due_day: int,
-        is_fixed: bool,
+        amount: Decimal,
+        due_date: int,
+        fixed_due_date: str,
+        is_split: str,
+        is_active: str
     ) -> None:
         # Basic validation and assignments
         self.name = name
         self.amount = amount
-        self.due_day = due_day
-        self.is_fixed = is_fixed
+        self.due_date = due_date
+        self.fixed_due_date = fixed_due_date
+        self.is_split = is_split
+        self.is_active = is_active
 
 
     # name

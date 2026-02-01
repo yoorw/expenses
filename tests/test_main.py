@@ -1,9 +1,8 @@
-import pytest 
 from decimal import Decimal
 from unittest.mock import patch 
 from io import StringIO
 
-from src.main import is_field_valid, is_quit, main, create_expense, calculate_payment_split, calculate_payment_plan, print_payment_plan
+from src.main import create_expense, calculate_payment_split, calculate_payment_plan, print_payment_plan
 
 def test_create_expense_returns_expense():
     """Test create_expense() with a valid expense name."""

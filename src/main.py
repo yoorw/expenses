@@ -1,8 +1,8 @@
 import json
 from decimal import Decimal, ROUND_HALF_UP
 
-from utils.decimalencoder import DecimalEncoder
-from utils.utils import decimal_to_currency
+from src.utils.decimalencoder import DecimalEncoder
+from src.utils.utils import decimal_to_currency
 
 
 def is_field_valid(field: str) -> bool:
@@ -109,7 +109,7 @@ def create_expenses() -> list[dict]:
                 print(f"  - {expense['name']}: ${amount_formatted:,.2f}")
 
             print("\nSaving expenses...")
-            save_expenses(expenses)
+            # save_expenses(expenses)       #TODO: improve logic to save expenses
 
             print("\nExiting input.")
 
@@ -140,10 +140,25 @@ def save_expenses(expenses: list) -> None:
 
         print(f"Expenses saved to {file_dir}.")
 
+def calculate_payment_plan(expenses: list[dict]) -> tuple[list[dict], list[dict]]:
+    # filter out split expenses 
+    nonsplit_expenses = [expense for expense in expenses if expense['is_split'].lower() in ['no', 'n']]
+    split_expenses = [expense for expense in expenses if expense['is_split'].lower() in ['yes', 'y']]
+
+    print(f"nonsplit_expenses: {nonsplit_expenses}")
+    print(f"split_expenses: {split_expenses}")
+
+    expenses_1, expenses_2 = calculate_payment_split(nonsplit_expenses)
+
+    # add back in expenses that can be split
+    expenses_1 = expenses_1 + split_expenses
+    expenses_2 = expenses_2 + split_expenses 
+
+    return expenses_1, expenses_2
+
+
 def calculate_payment_split(expenses: list[dict]) -> tuple[list[dict], list[dict]]:
     """Calculate payment amounts based on expenses. Uses Partition Backtracking Algorithm"""
-    # Placeholder implementation
-    payment_plan = []
 
     total_expense = sum(expense['amount'] for expense in expenses)
     target = total_expense / 2
@@ -189,7 +204,7 @@ def print_payment_plan(subset_1: list[dict], subset_2: list[dict]) -> None:
     """Create a payment plan based on the expenses (not implemented)."""
     totals = []
     for idx, expenses in enumerate([subset_1, subset_2]):
-        total = sum(expense['amount'] for expense in expenses)
+        total = sum(expense['amount'] if expense['is_split'] in ['no', 'n'] else (expense['amount']/2) for expense in expenses)
         totals.append(total)
 
         print(f"\nPayment Schedule {idx+1}:")
@@ -197,11 +212,20 @@ def print_payment_plan(subset_1: list[dict], subset_2: list[dict]) -> None:
         print(f"Total Amount: ${total_formatted:,.2f}")
         print("Expenses:")
         for expense in expenses:
+            print("-"*20)
             for expense_field, expense_val in expense.items():
+                # convert amount field to currency format
+                expense_amt = decimal_to_currency(expense['amount'])
+
                 if expense_field == "amount":
-                    expense_val = decimal_to_currency(expense_val)
+                    expense_val = expense_amt.quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
 
                 print(f" - {expense_field}: {expense_val}")
+
+            # if the expense can be split, show split amount
+            if expense['is_split'] in ['yes', 'y']:
+                split_val = decimal_to_currency(expense['amount'] / 2)
+                print(f"   -> Split Amount for {expense['name']}: {split_val.quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)}")
 
 
     expense_diff = abs(totals[0] - totals[1])
@@ -216,7 +240,7 @@ def schedule_payments(payment_plan_1: list[dict], payment_plan_2: list[dict]) ->
 
 def main():
     expenses = create_expenses()
-    subset_1, subset_2 = calculate_payment_split(expenses)
+    subset_1, subset_2 = calculate_payment_plan(expenses)
     print_payment_plan(subset_1, subset_2)
     # schedule_payments(schedule_1, schedule_2)
 

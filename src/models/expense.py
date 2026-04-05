@@ -1,7 +1,8 @@
 from datetime import date, datetime
-from decimal import Decimal, InvalidOperation
+from decimal import Decimal, InvalidOperation, ROUND_HALF_UP
 from typing import Optional, Dict, Any
 
+from src.utils.utils import string_to_boolean
 
 class Expense:
     """Represent a single expense item.
@@ -19,82 +20,85 @@ class Expense:
     def __init__(
         self,
         name: str,
-        amount: Any,
-        due_date: int,
-        fixed_due_date: bool,
-        is_split: bool,
-        is_active: bool
+        amount: str,
+        due_date: str,
+        fixed_due_date: str,
+        is_split: str,
+        is_active: str
     ) -> None:
         # Basic validation and assignments
         self.name = name
-        self.amount = amount
-        self.due_date = due_date
-        self.fixed_due_date = fixed_due_date
-        self.is_split = is_split
-        self.is_active = is_active 
+        self.amount = Decimal(amount).quantize(Decimal('0.01'), rounding=ROUND_HALF_UP)
+        self.due_date = int(due_date)
+        self.fixed_due_date = string_to_boolean(fixed_due_date)
+        self.is_split = string_to_boolean(is_split)
+        self.is_active = string_to_boolean(is_active) 
 
-    # name
-    @property
-    def name(self) -> str:
-        return self._name
-
-    @name.setter
-    def name(self, value: str) -> None:
-        if not isinstance(value, str) or not value.strip():
-            raise ValueError("Name must be a non-empty string")
-        self._name = value.strip()
-
-    # amount (store as Decimal)
-    @property
-    def amount(self) -> Decimal:
-        return self._amount
-
-    @amount.setter
-    def amount(self, value: Any) -> None:
-        try:
-            # Accept Decimal, int, float, or numeric string
-            if isinstance(value, Decimal):
-                dec = value
-            else:
-                dec = Decimal(str(value))
-        except (InvalidOperation, TypeError, ValueError) as exc:
-            raise ValueError(f"amount must be a number or Decimal: {exc}")
-        if dec < 0:
-            raise ValueError("amount must be non-negative")
-        # Normalize to two decimal places for currency-like behavior
-        self._amount = dec.quantize(Decimal("0.01"))
-
-    # due_day
-    @property
-    def due_day(self) -> int:
-        return self._due_day
-
-    @due_day.setter
-    def due_day(self, value: int) -> None:
-        if not isinstance(value, int):
-            raise ValueError("due_day must be an Integer")
-        self._due_day = value
-
-    # is_fixed
-    @property
-    def is_fixed(self) -> bool:
-        return self._is_fixed
-
-    @is_fixed.setter
-    def is_fixed(self, value: bool) -> None:
-        if not isinstance(value, bool):
-            raise ValueError("is_fixed must be a Boolean")
-        self._is_fixed = value
 
     def to_dict(self) -> Dict[str, Any]:
         return {
             "name": self.name,
             "amount": str(self.amount),
-            "due_day": self.due_day,
-            "is_fixed": self.is_fixed
+            "due_date": self.due_date,
+            "fixed_due_date": self.fixed_due_date,
+            "is_split": self.is_split,
+            "is_active": self.is_active
         }
 
     def __repr__(self) -> str:
         return (
             f"Expense(name={self.name!r}, amount={self.amount!r}, due_date={self.due_day!r}, is_fixed={self.is_fixed}"
         )
+
+    # # name
+    # @property
+    # def name(self) -> str:
+    #     return self._name
+
+    # @name.setter
+    # def name(self, value: str) -> None:
+    #     if not isinstance(value, str) or not value.strip():
+    #         raise ValueError("Name must be a non-empty string")
+    #     self._name = value.strip()
+
+    # # amount (store as Decimal)
+    # @property
+    # def amount(self) -> Decimal:
+    #     return self._amount
+
+    # @amount.setter
+    # def amount(self, value: Any) -> None:
+    #     try:
+    #         # Accept Decimal, int, float, or numeric string
+    #         if isinstance(value, Decimal):
+    #             dec = value
+    #         else:
+    #             dec = Decimal(str(value))
+    #     except (InvalidOperation, TypeError, ValueError) as exc:
+    #         raise ValueError(f"amount must be a number or Decimal: {exc}")
+    #     if dec < 0:
+    #         raise ValueError("amount must be non-negative")
+    #     # Normalize to two decimal places for currency-like behavior
+    #     self._amount = dec.quantize(Decimal("0.01"))
+
+    # # due_day
+    # @property
+    # def due_day(self) -> int:
+    #     return self._due_day
+
+    # @due_day.setter
+    # def due_day(self, value: int) -> None:
+    #     if not isinstance(value, int):
+    #         raise ValueError("due_day must be an Integer")
+    #     self._due_day = value
+
+    # # is_fixed
+    # @property
+    # def is_fixed(self) -> bool:
+    #     return self._is_fixed
+
+    # @is_fixed.setter
+    # def is_fixed(self, value: bool) -> None:
+    #     if not isinstance(value, bool):
+    #         raise ValueError("is_fixed must be a Boolean")
+    #     self._is_fixed = value

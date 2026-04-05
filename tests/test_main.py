@@ -1,4 +1,3 @@
-import pytest 
 from decimal import Decimal
 from unittest.mock import patch 
 from io import StringIO
@@ -132,6 +131,6 @@ def test_print_payment_plan():
     with patch('sys.stdout', new=StringIO()) as fake_out:
         print_payment_plan(test_exp_1, test_exp_2)
         output = fake_out.getvalue()
-        assert "-> Split Amount for expense_split_1: 749.30" in output
-        assert "-> Split Amount for expense_split_2: 75.00" in output 
+        assert "-> Split Amount for expense_split_1: $749.30" in output
+        assert "-> Split Amount for expense_split_2: $75.00" in output 
         assert "Difference between schedules: $0.57" in output
